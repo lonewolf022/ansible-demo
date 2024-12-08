@@ -19,17 +19,17 @@
     host_all: yes
   become: yes
 
-- name: Secure MySQL installation
-  mysql_secure_installation:
-    login_user: root
-    login_password: "{{ mysql_root_password }}"
-    validate_password_policy: LOW
-    root_password: "{{ mysql_root_password }}"
-    remove_anonymous_users: yes
-    disallow_root_login_remotely: yes
-    remove_test_db: yes
-    state: present
-  become: yes
+# - name: Secure MySQL installation
+#   mysql_secure_installation:
+#     login_user: root
+#     login_password: "{{ mysql_root_password }}"
+#     validate_password_policy: LOW
+#     root_password: "{{ mysql_root_password }}"
+#     remove_anonymous_users: yes
+#     disallow_root_login_remotely: yes
+#     remove_test_db: yes
+#     state: present
+#   become: yes
 
 - name: Create MySQL database
   mysql_db:
