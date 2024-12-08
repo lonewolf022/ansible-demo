@@ -1,5 +1,5 @@
-
-handlers:
+# handlers/main.yml
+---
   - name: Restart PHP-FPM
     service:
       name: php7.4-fpm

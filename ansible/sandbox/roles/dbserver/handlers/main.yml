@@ -1,4 +1,5 @@
-handlers:
+# handlers/main.yml
+---
   - name: Restart MySQL
     service:
       name: mysql

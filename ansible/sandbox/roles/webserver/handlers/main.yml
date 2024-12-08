@@ -1,7 +1,6 @@
-
-handlers:
+# handlers/main.yml
+---
   - name: Restart NGINX
     service:
       name: nginx
       state: restarted
-    become: yes
