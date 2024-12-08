@@ -1,0 +1,6 @@
+# 
+mysql_root_password: r00t_P@$$w0rd
+mysql_databases:
+  - name: test_db
+    encoding: utf8
+    collation: utf8_general_ci

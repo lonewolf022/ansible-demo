@@ -1,0 +1,57 @@
+---
+- name: Install MySQL server
+  apt:
+    name: mysql-server
+    state: present
+  become: yes
+
+- name: Start and enable MySQL service
+  systemd:
+    name: mysql
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Set MySQL root password
+  mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    host_all: yes
+  become: yes
+
+- name: Secure MySQL installation
+  mysql_secure_installation:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    validate_password_policy: LOW
+    root_password: "{{ mysql_root_password }}"
+    remove_anonymous_users: yes
+    disallow_root_login_remotely: yes
+    remove_test_db: yes
+    state: present
+  become: yes
+
+- name: Create MySQL database
+  mysql_db:
+    name: "{{ item.name }}"
+    encoding: "{{ item.encoding }}"
+    collation: "{{ item.collation }}"
+  with_items: "{{ mysql_databases }}"
+  become: yes
+
+- name: Create MySQL user
+  mysql_user:
+    name: username
+    password: password
+    priv: 'basic_poc_db.*:ALL'
+    host: '%'
+    state: present
+  become: yes
+
+- name: Configure MySQL to listen on all interfaces
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: '^bind-address\s*=.*'
+    line: 'bind-address = 0.0.0.0'
+  notify: Restart MySQL
+  become: yes

@@ -1,0 +1,13 @@
+---
+- hosts: basic_web_server
+  roles:
+    - webserver
+
+- hosts: basic_app_server
+  roles:
+    - appserver
+
+- hosts: basic_db_server
+  roles:
+    - dbserver
+    

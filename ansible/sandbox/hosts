@@ -1,0 +1,8 @@
+[basic_web_server]
+192.168.112.7
+
+[basic_app_server]
+192.168.112.8
+
+[basic_db_server]
+192.168.112.9

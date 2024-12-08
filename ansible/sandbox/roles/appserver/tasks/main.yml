@@ -1,0 +1,41 @@
+---
+- name: Install dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+    - git
+    - python3
+    - python3-pip
+    - php-fpm
+    - php-mysql
+
+- name: Configure PHP-FPM to listen on all interfaces
+  lineinfile:
+    path: /etc/php/7.4/fpm/pool.d/www.conf
+    regexp: '^listen = .*'
+    line: 'listen = 0.0.0.0:9000'
+  notify: Restart PHP-FPM
+  become: yes
+
+- name: Create index.php
+  copy:
+    dest: /var/www/html/index.php
+    content: |
+      <?php
+      $servername = "192.168.112.9";  // Replace with the IP of your database server
+      $username = "username";
+      $password = "password";
+      $dbname = "basic_poc_db";
+
+      // Create connection
+      $conn = new mysqli($servername, $username, $password, $dbname);
+
+      // Check connection
+      if ($conn->connect_error) {
+          die("Connection failed: " . $conn->connect_error);
+      }
+      echo "Connected successfully";
+      ?>
+  become: yes

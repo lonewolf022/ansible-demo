@@ -1,0 +1,42 @@
+---
+- name: Install NGINX
+  apt:
+    name: nginx
+    state: present
+  become: yes
+
+- name: Configure NGINX for PHP-FPM
+  copy:
+    dest: /etc/nginx/sites-available/example.com
+    content: |
+      server {
+          listen 80;
+          server_name example.com;
+
+          root /var/www/html;
+          index index.php index.html index.htm;
+
+          location / {
+              try_files $uri $uri/ =404;
+          }
+
+          location ~ \.php$ {
+              include snippets/fastcgi-php.conf;
+              fastcgi_pass 192.168.112.8:9000;  # Replace with the IP of your app server
+          }
+
+          location ~ /\.ht {
+              deny all;
+          }
+      }
+  notify: Restart NGINX
+  become: yes
+
+- name: Enable NGINX site
+  file:
+    src: /etc/nginx/sites-available/example.com
+    dest: /etc/nginx/sites-enabled/example.com
+    state: link
+  notify: Restart NGINX
+  become: yes
+  
