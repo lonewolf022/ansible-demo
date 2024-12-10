@@ -1,3 +1,6 @@
+[basic_basic_bastion]
+192.168.112.5
+
 [basic_web_server]
 192.168.112.7
 
